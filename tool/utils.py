@@ -120,17 +120,22 @@ def parseDstat(fname):
     write_list = []
     recv_list = []
     send_list = []
-    for i in range(6):
+    #for i in range(6):
+    for i in range(5):
         next(csvfile)
     reader = csv.DictReader(csvfile)
     header = reader.fieldnames
+    next(csvfile) #first entry contains empty data, so skip it
     for row in reader:
-        idle_list.append(float(row["idl"]))
-        wai_list.append(float(row["wai"]))
-        read_list.append(float(row["read"])/1024/1024) #in MB
-        write_list.append(float(row["writ"])/1024/1024)
-        recv_list.append(float(row["recv"])/1024/1024)
-        send_list.append(float(row["send"])/1024/1024)
+        #print("OKOKOK")
+        #print (reader.fieldnames)
+        #print(row)
+        idle_list.append(float(row["total usage:idl"]))
+        wai_list.append(float(row["total usage:wai"]))
+        read_list.append(float(row["dsk/total:read"])/1024/1024) #in MB
+        write_list.append(float(row["dsk/total:writ"])/1024/1024)
+        recv_list.append(float(row["net/total:recv"])/1024/1024)
+        send_list.append(float(row["net/total:send"])/1024/1024)
 
     mean_idle = statistics.mean(idle_list)
     mean_wait = statistics.mean(wai_list)
